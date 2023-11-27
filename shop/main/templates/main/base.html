@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/styles.css' %}">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Онлайн-магазин<br>комнатных цветов</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+
+    {% url 'flower-list' as flower_list_url %}
+    {% if request.path == flower_list_url %}
+
+      <li class="nav-item">
+        <a class="nav-link menu" href="#">Главная<span class="sr-only">(текущая страница)</span></a>
+      </li>
+
+    {% else %}
+      <li class="nav-item active">
+        <a class="nav-link menu" href="{% url 'flower-list' %}">На главную</a>
+      </li>
+    {% endif %}
+      <div class="registration">
+
+        <div class="cart">
+          <a href="{% url 'cart:cart_detail' %}">
+              {% with total_items=cart|length %}
+                  {% if total_items > 0 %}
+                      Корзина: {{total_items}} позиций на сумму {{cart.get_total_price}}
+                  {% else %}
+                      Ваша корзина пуста
+                  {% endif %}
+              {% endwith %}
+          </a>
+        </div>
+    {% if user.is_authenticated%}
+        <li class="nav-item"><a  class="register" href="{% url 'user:logout' %}">Выход</a></li>
+    {%else%}
+        <li class="nav-item"><a class="register"  href="{% url 'user:login'%}">Вход</a></li>
+        <li class="nav-item" ><a class="register" href="{% url 'user:registration'%}">Регистрация</a></li>
+    {% endif %}
+      </div>
+    </ul>
+  </div>
+</nav>
+{% block flower%}
+{% endblock%}
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% extends 'main/base.html' %}
+{% block flower%}
+
+<style>
+    /* Стили для заказов */
+    .order {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.3s;
+    }
+
+    .order:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .order p {
+        margin: 5px 0;
+    }
+
+    .order h3 {
+        margin-bottom: 10px;
+    }
+
+    .order ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .order li {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .order li img {
+        width: 100px;
+        height: auto;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .order li a {
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+    }
+
+    .no-orders {
+        margin-bottom: 20px;
+        color: #888;
+        background-color: #f9f9f9;
+        padding: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .no-orders a {
+        color: #000;
+        font-weight: bold;
+    }
+</style>
+
+<h2>Заказы пользователя</h2>
+{% for order in orders %}
+    <div class="order">
+        <hr>
+        <p>Заказ №{{ order.id }}</p>
+        <p>Дата создания: {{ order.created }}</p>
+        <h3>Заказанные товары:</h3>
+        <ul>
+
+            {% for plant in ordered_plants %}
+                <li><img src="{{ plant.main_img.url }}" alt="{{ plant.plant_name }}" height="10" width="10">
+                <a href="{{ plant.get_absolute_url }}">{{ plant.plant_name }}</a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+{% empty %}
+    <div class="no-orders">
+        <p>У пользователя нет заказов.</p>
+        <a href="{% url 'flower-list' %}">Купить что-то</a>
+    </div>
+{% endfor %}
+
+{% endblock %}

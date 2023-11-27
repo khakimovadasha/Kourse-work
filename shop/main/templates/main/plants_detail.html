@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block flower %}
+
+<div class="plant-detail">
+  <div class="image-gallery">
+    <img class="slider-image" src="{{ plant.main_img.url }}" alt="{{ plant.plant_name }}">
+    {% for i in img_gallery %}
+      <img class="slider-image" src="{{ i.images.url }}" alt="">
+    {% endfor %}
+  </div>
+
+  <div class="image-slider">
+    <img src="{{ plant.main_img.url }}" alt="{{ plant.plant_name }}">
+  </div>
+
+  <h2>{{ plant.plant_name }}</h2>
+  <p>Старая цена: {{ plant.old_price }}</p>
+  <p>Актуальная цена: {{ plant.price }}</p>
+  <p>Короткое описание: {{ plant.short_description }}</p>
+  <p>Полное описание: {{ plant.full_description }}</p>
+  <p>Категория: {{ plant.category }}</p>
+
+  <form action="{% url 'cart:cart_add' plant.id %}" method="post">
+    {% csrf_token %}
+    {{ cart_product_form }}
+    <input type="submit" value="Добавить в корзину">
+  </form>
+</div>
+
+<script>
+  const sliderImages = document.querySelectorAll('.slider-image');
+  const imageSlider = document.querySelector('.image-slider');
+
+  sliderImages.forEach((image) => {
+    image.addEventListener('click', () => {
+      const imgSrc = image.getAttribute('src');
+      imageSlider.innerHTML = `<img src="${imgSrc}" alt="">`;
+    });
+  });
+</script>
+
+{% endblock %}

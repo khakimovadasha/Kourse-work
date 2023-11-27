@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+
+{% block flower %}
+<style>
+  /* Стили для формы регистрации */
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-field {
+    margin-bottom: 20px;
+  }
+
+  .form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-field input[type="text"],
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .form-field button[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+
+<h1>Вход</h1>
+<form method="post" action="">
+  {% csrf_token %}
+
+  <div class="form-field">
+    <label for="id_username">Имя пользователя:</label>
+    {{ form.username }}
+  </div>
+
+
+  <div class="form-field">
+    <label for="id_password1">Пароль:</label>
+    {{ form.password }}
+  </div>
+
+
+  <input type="submit" value="Отправить">
+</form>
+{% endblock %}

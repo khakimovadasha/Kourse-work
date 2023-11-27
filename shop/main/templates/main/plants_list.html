@@ -1,0 +1,137 @@
+{% extends 'main/base.html' %}
+
+{% block flower %}
+
+<hr>
+<a href="{% url 'user:profile' %}">Профиль</a>
+{{ user.first_name }}
+
+
+<div class="categories">
+    {% if cat_selected == 0 %}
+        <li class="selected">Все категории</li>
+    {% else %}
+        <li><a href="{% url 'flower-list' %}">Все категории</a></li>
+    {% endif %}
+
+    {% for c in categories %}
+        {% if c.pk == cat_selected %}
+            <li class="selected">{{c.cat_name}}</li>
+        {% else %}
+            <li><a href="{{ c.get_absolute_url }}">{{c.cat_name}}</a></li>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<hr>
+
+
+<form action="{% url 'flower-list' %}">
+    <input  class="input-search" type="search" name="search" placeholder="Поиск по сайту">
+    <button class="button-search" type="submit">Найти</button>
+</form>
+
+<div class="products">
+    {% for i in plants %}
+        <div class="card">
+            <img src="{{ i.main_img.url }}" alt="{{ i.plant_name }}">
+            <h3>{{ i.plant_name }}</h3>
+             <p class="old-price">Старая цена: {{ i.old_price }}</p>
+            <p>Актуальная цена: {{ i.price }}</p>
+            <p>Короткое описание: {{ i.short_description }}</p>
+            <p>Категория: {{ i.category }}</p>
+            <p><a href="{{ i.get_absolute_url }}"><button>Подробнее</button></a></p>
+        </div>
+    {% endfor %}
+</div>
+
+{% if plants.has_other_pages %}
+    <div class="pagination">
+        {% if plants.has_previous %}
+            <a href="?page=1">Первая</a>
+            <a href="?page={{ plants.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current-page">{{ plants.number }}</span>
+
+        {% if plants.has_next %}
+            <a href="?page={{ plants.next_page_number }}">Следующая</a>
+            <a href="?page={{ plants.paginator.num_pages }}">Последняя</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+<style>
+  .plant-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .plant-detail img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+
+  .image-gallery {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .image-gallery .slider-image {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid #ccc;
+  }
+
+  .image-slider {
+    max-width: 500px;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  .image-slider img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+
+
+    .pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination .current-page {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+</style>
+{% endblock %}

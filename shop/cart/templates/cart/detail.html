@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Корзина покупок</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .delete-button {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .num {
+            text-align: right;
+        }
+
+        .total td:first-child {
+            font-weight: bold;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button + .button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Корзина покупок</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Картинка</th>
+                <th>Товар</th>
+                <th>Кол-во</th>
+                <th>Удалить</th>
+                <th>Цена</th>
+                <th>Общее</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+        {% with product=item.product%}
+            <tr>
+                <td>
+                    <a href="#">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{% if product.main_img%}{{product.main_img.url}}
+                                {% else %}no photo{% endif%}">
+                        </a>
+                    </a>
+                </td>
+                <td>{{product.plant_name}}</td>
+                <td>
+                <form action="{% url 'cart:cart_add' product.id%}" method="post">
+                    {{item.update_quantity_form.quantity}}
+                    {{item.update_quantity_form.override}}
+                    <input type="submit" value="Изменить">
+                    {% csrf_token %}
+
+                </form>
+                </td>
+                <td>
+                <form action="{% url 'cart:cart_remove' product.id%}" method="POST">
+                    <input type="submit" class="delete-button" value="удалить">
+                    {% csrf_token %}
+                </form>
+                </td>
+
+                <td class="num">{{item.price}} ru</td>
+                <td class="num">{{item.total_price}} ru</td>
+            </tr>
+            {% endwith %}
+        {% endfor%}
+            <tr class="total">
+                <td colspan="3"></td>
+                <td>Итого:</td>
+                <td class="num">{{cart.get_total_price}} ru</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url 'flower-list' %}" class="button">Продолжить покупки</a>
+        <a href="{% url 'order' %}" class="button">Оформить заказ</a>
+    </p>
+</body>
+</html>

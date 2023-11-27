@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}
+
+{% block flower %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5; /* Цвет заднего фона */
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .profile {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff; /* Цвет фона блока профиля */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень блока профиля */
+        }
+
+        .profile__field {
+            margin-bottom: 10px;
+        }
+
+        .profile__field label {
+            font-weight: bold;
+        }
+
+        .profile__image {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .profile__details {
+            overflow: hidden; /* Исправление выравнивания */
+        }
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <h1 style="color: #333;">Профиль пользователя</h1>
+        <div class="profile__details">
+            <div class="profile__field">
+                {% if user.img %}
+                    <img src="{{ user.img.url }}" alt="Фото пользователя" height="100" width="100">
+                {% else %}
+
+                        <label >Фото</label>
+                        <span >Загрузите фото профиля</span>
+
+                {% endif %}
+            </div>
+            <div>
+                {% if user.first_name%}
+                <div class="profile__field">
+                    <label for="first_name">Имя:</label>
+                    <span id="first_name">{{ user.first_name }}</span>
+                </div>
+                {% else %}
+                <div class="profile__field">
+                    <label for="first_name">Имя:</label>
+                    <span id="first_name2">Добавьте имя</span>
+                </div>
+                {% endif %}
+
+                {% if user.last_name %}
+                <div class="profile__field">
+                    <label for="last_name">Фамилия:</label>
+                    <span id="last_name">{{ user.last_name }}</span>
+                </div>
+                {% else %}
+                <div class="profile__field">
+                    <label for="last_name">Фамилия:</label>
+                    <span id="last_name2">Добавьте фамилию</span>
+                </div>
+                {%endif%}
+                {% if user.email %}
+                <div class="profile__field">
+                    <label for="email">Email:</label>
+                    <span id="email">{{ user.email }}</span>
+                </div>
+                {% else %}
+                <div class="profile__field">
+                    <label for="email">Email:</label>
+                    <span id="email2">Добавьте email</span>
+                </div>
+                {% endif %}
+                {% if user.bio%}
+                <div class="profile__field">
+                    <label for="bio">Описание профиля:</label>
+                    <p id="bio">{{ user.bio }}</p>
+                </div>
+                {% else %}
+                <div class="profile__field">
+                    <label for="bio">Описание профиля:</label>
+                    <p id="bio2">Добавьте описание к профилю</p>
+                </div>
+                {% endif%}
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'user:update_profile' %}">Изменить профиль</a><br>
+    <a href="{% url 'user:user_orders' %}">Посмотреть мои заказы</a>
+    <p style="color: #666;">Наслаждайтесь вашим профилем!</p>
+</body>
+</html>
+{% endblock %}
