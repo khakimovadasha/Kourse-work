@@ -35,7 +35,7 @@ class PlantsViewSet(viewsets.ModelViewSet):
     @action(methods=['GET'], detail=False)
     def get_check_cactuses_palms_count(self, request, **kwargs):
         #  кастомный фильтр для нужд бизнеса
-        queryset = self.get_queryset().filter(~Q(category__cat_name='инструменты') & (Q(category__cat_name='пальмы') | Q(category__cat_name='кактусы')))
+        queryset = self.get_queryset().filter(~Q(category__cat_name='суккуленты') & (Q(category__cat_name='пальмы') | Q(category__cat_name='кактусы')))
         data = dict()
         data['data'] = queryset.count()
         return Response(data)
@@ -48,8 +48,6 @@ class PlantsViewSet(viewsets.ModelViewSet):
         plant.save()
         return Response('Цены сброшены!')
         
-        
-       
 
 
 class OrdersViewSet(viewsets.ModelViewSet):
@@ -70,10 +68,6 @@ class OrdersViewSet(viewsets.ModelViewSet):
         data = dict()
         data['data'] = serializer.data
         return Response(data)
-    
-   
-    
-    
 
 
 
